@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+const BottomNavBar = ({ isDarkMode, toggleDarkMode }) => {
+  return (
+    <View style={[styles.bottomNavBar, isDarkMode && darkModeStyles.bottomNavBar]}>
+      <TouchableOpacity onPress={toggleDarkMode} style={styles.bottomNavIcon}>
+        <Icon name={isDarkMode ? 'sun-o' : 'moon-o'} size={24} color={isDarkMode ? '#fff' : '#212529'} />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 export default function TodoListApp() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
@@ -80,9 +90,6 @@ export default function TodoListApp() {
   return (
     <View style={[styles.container, isDarkMode && darkModeStyles.container]}>
       <Text style={[styles.title, isDarkMode && darkModeStyles.title]}>Todo List</Text>
-      <TouchableOpacity style={[styles.toggleButton, isDarkMode ? styles.darkModeToggleButton : styles.lightModeToggleButton]} onPress={toggleDarkMode}>
-        <Icon name={isDarkMode ? 'sun-o' : 'moon-o'} size={20} color={isDarkMode ? '#fff' : '#212529'} />
-      </TouchableOpacity>
       <View style={styles.inputContainer}>
         <TextInput
           style={[styles.input, isDarkMode && darkModeStyles.input]}
@@ -115,6 +122,8 @@ export default function TodoListApp() {
           </TouchableOpacity>
         </View>
       )}
+
+      <BottomNavBar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
     </View>
   );
 }
@@ -215,19 +224,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#fff',
   },
-  toggleButton: {
+  bottomNavBar: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     position: 'absolute',
-    top: 20,
-    right: 20,
-    padding: 10,
-    backgroundColor: '#007bff',
-    borderRadius: 50,
-  },
-  lightModeToggleButton: {
+    bottom: 0,
+    left: 0,
+    right: 0,
     backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#ced4da',
+    paddingVertical: 10,
   },
-  darkModeToggleButton: {
-    backgroundColor: '#343a40',
+  bottomNavIcon: {
+    paddingHorizontal: 20,
   },
 });
 
@@ -263,11 +274,8 @@ const darkModeStyles = StyleSheet.create({
   updateInput: {
     backgroundColor: '#fff',
   },
-  toggleButton: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-    padding: 10,
-    borderRadius: 50,
+  bottomNavBar: {
+    backgroundColor: '#343a40',
+    borderTopColor: '#343a40',
   },
 });
